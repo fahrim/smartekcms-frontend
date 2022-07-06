@@ -45,6 +45,11 @@
     "/img",
     "/scss"
   ],
+  "homepage": "https://github.com/fahrim/smartekcms-frontend#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fahrim/smartekcms-frontend.git"
+  },
   "scripts": {
     "build": "npm run js",
     "js": "babel src --presets babel-preset-es2015 --out-dir dist",
