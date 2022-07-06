@@ -1,0 +1,203 @@
+table th a:not([href]) {
+  cursor: pointer;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #edf3fe;
+}
+
+.table-listing thead th {
+  border: none;
+}
+
+.table-listing thead tr {
+  border-bottom: 1px solid #f0f2f5;
+  border-top: 1px solid #dee3e7;
+}
+
+.table-listing td {
+  border-top: 1px solid #f0f2f5;
+  vertical-align: middle;
+}
+
+.table-listing .row.no-gutters .btn {
+  margin-right: 10px;
+  @media (max-width: 1319px) {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+
+.table-listing td:last-of-type {
+  min-width: 95px;
+  //display: flex;
+  justify-content: flex-end;
+}
+
+@media (min-width: 1380px) {
+  .table-listing td:last-of-type {
+    display: flex;
+  }
+}
+
+.table-listing td .row {
+    flex-wrap: nowrap;
+}
+
+td > .switch {
+  top: 4px;
+  margin: 0;
+}
+
+
+//old style
+//@media (max-width: 991px) {
+//  .table-listing {
+//    th,
+//    td {
+//      display: none;
+//    }
+//    tr {
+//      display: flex;
+//      flex-direction: row;
+//      justify-content: space-between;
+//    }
+//    th:last-of-type,
+//    td:last-of-type,
+//    th:nth-of-type(2),
+//    td:nth-of-type(2) {
+//      display: flex;
+//    }
+//    td:last-of-type {
+//      padding-right: 0;
+//    }
+//  }
+//  td:nth-of-type(2) {
+//    overflow: hidden;
+//  }
+//}
+
+//new style
+//@media (max-width: 991px) {
+//  //.table-listing.hide-nth-2 { //smartek.revize.02.12.21
+//  //  th,
+//  //  td {
+//  //    display: none;
+//  //  }
+//  //  tr {
+//  //    display: flex;
+//  //    flex-direction: row;
+//  //    justify-content: space-between;
+//  //  }
+//  //  th:last-of-type,
+//  //  td:last-of-type,
+//  //  th:nth-of-type(2),
+//  //  td:nth-of-type(2) {
+//  //    display: flex;
+//  //    width: 100%;
+//  //  }
+//  //  td:last-of-type {
+//  //    padding-right: 0;
+//  //  }
+//  //}
+//  //td:nth-of-type(2) {
+//  //  overflow: hidden;
+//  //}
+//
+//  $columns: 0, 1, 2, 3, 4 ,5;
+//  @each $column in $columns {
+//    .table-listing.hide-nth-#{$column} { //smartek.revize.02.12.21
+//      th,
+//      td {
+//        display: none;
+//      }
+//      tr {
+//        display: flex;
+//        flex-direction: row;
+//        justify-content: space-between;
+//      }
+//      th:last-of-type,
+//      td:last-of-type,
+//      th:nth-of-type(#{$column}),
+//      td:nth-of-type(#{$column}) {
+//        display: flex;
+//        width: 100%;
+//        width: -moz-available;          /* WebKit-based browsers will ignore this. */
+//        width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+//        width: fill-available;
+//        box-sizing: content-box;
+//      }
+//      td:last-of-type {
+//        padding-right: 0;
+//      }
+//    }
+//    td:nth-of-type(#{$column}) {
+//      overflow: hidden;
+//    }
+//  }
+//
+//}
+
+// Utilities
+// #https://getbootstrap.com/docs/5.0/layout/breakpoints/
+//  $grid-breakpoints: (
+//          xs: 0,
+//          sm: 576px,
+//          md: 768px,
+//          lg: 992px,
+//          //xl: 1200px,
+//          //xxl: 1400px
+//  );
+/*dynamic responsive table st-smartek*/
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-between($breakpoint, md) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    $columns: 1, 2, 3, 4 ,5, 6, 7, 8, 9, 10;
+    @each $column in $columns {
+      .column-hide.hide#{$infix}-nth-#{$column} { //smartek.revize.04.12.21
+        th,
+        td {
+          display: none;
+        }
+        tr {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+        }
+        th:last-of-type,
+        td:last-of-type,
+        th:nth-of-type(#{$column}),
+        td:nth-of-type(#{$column}) {
+          display: flex;
+          width: 100%!important;
+          box-sizing: content-box;
+          align-items: center;
+        }
+
+        //column == 1 e padding-top: 0 yap. ve max-width: 3%;
+        @if $column == 1 {
+          //line shift issue fixed for bulk checkbox
+          th:nth-of-type(#{$column}){
+            padding-bottom: 0;
+            max-width: 3%;
+          }
+
+          td:nth-of-type(#{$column}) {
+            padding-top: 0;
+            max-width: 3%;
+          }
+
+        }
+
+        td:last-of-type {
+          padding-right: 0;
+        }
+      }
+      td:nth-of-type(#{$column}) {
+        overflow: hidden;
+      }
+    }
+
+  }
+}
