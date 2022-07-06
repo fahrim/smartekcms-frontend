@@ -8,9 +8,7 @@ var _BaseListing = require('../base-components/Listing/BaseListing');
 
 var _BaseListing2 = _interopRequireDefault(_BaseListing);
 
-function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 $(document).ready(function ($) {
     $(document).on('click', '.close_button', function (e) {

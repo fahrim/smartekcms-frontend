@@ -8,9 +8,7 @@ var _vue2Dropzone = require('vue2-dropzone');
 
 var _vue2Dropzone2 = _interopRequireDefault(_vue2Dropzone);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var BaseUpload = {
   components: {

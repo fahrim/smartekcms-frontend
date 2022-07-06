@@ -67,6 +67,4 @@ Object.defineProperty(exports, 'TranslationListing', {
   }
 });
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

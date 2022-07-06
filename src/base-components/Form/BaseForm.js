@@ -1,16 +1,10 @@
 'use strict';
 
-var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol" ? function (obj) {
-  return typeof obj === "undefined" ? "undefined" : _typeof2(obj);
-} : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof2(obj);
-};
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 require('./bootstrap');
 
@@ -50,9 +44,7 @@ var _UserDetailTooltip = require('../Listing/components/UserDetailTooltip');
 
 var _UserDetailTooltip2 = _interopRequireDefault(_UserDetailTooltip);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 Vue.component('wysiwyg', _vueTrumbowyg2.default);
 
@@ -323,7 +315,7 @@ var BaseForm = {
     },
     onSuccess: function onSuccess(data) {
       this.submiting = false;
-      console.log(data.message);
+      console.log(data.message)
       this.$notify({ type: 'success', title: 'Success!', text: data.message ? data.message : 'Item successfully update.' });
       if (data.redirect) {
         window.location.replace(data.redirect);

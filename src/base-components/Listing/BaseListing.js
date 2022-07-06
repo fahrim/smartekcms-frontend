@@ -26,9 +26,7 @@ var _UserDetailTooltip2 = _interopRequireDefault(_UserDetailTooltip);
 
 var _lodash = require('lodash');
 
-function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 Vue.directive('tooltip', _vTooltip.VTooltip);
 Vue.directive('close-popover', _vTooltip.VClosePopover);
@@ -71,7 +69,7 @@ exports.default = {
             // bulkItemsSlug: {}, //smartek
             bulkCheckingAllLoader: false,
             dummy: null,
-            showHideColumn: false //st.041221
+            showHideColumn: false, //st.041221
         };
     },
     props: {
@@ -278,7 +276,7 @@ exports.default = {
                         _this5.$modal.hide('dialog');
                         axios.post(url, {
                             data: {
-                                'ids': itemsToDelete
+                                'ids': itemsToDelete,
                                 // 'slugs': itemsToForgetCache
                             }
                         }).then(function (response) {
@@ -372,6 +370,7 @@ exports.default = {
                 _this8.$notify({ type: 'error', title: 'Error!', text: error.response.data.message ? error.response.data.message : 'An error has occured.' });
             });
         },
+
 
         publishNow: function publishNow(url, row, dialogType) {
             var _this = this;
