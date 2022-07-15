@@ -34,3 +34,6 @@ $(function () {
         }
 	}).hide();
 });
+
+//coreui sidebar modify
+require('./custom/reformat-sidebar');
