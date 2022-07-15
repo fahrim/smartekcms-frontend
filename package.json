@@ -1,6 +1,6 @@
 {
   "name": "smartekcms",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "smarteknoloji",
   "description": "This is a frontend dependency of smartek CMS. Is a Laravel-based toolkit for building administration interfaces.",
   "main": "./dist/index.js",
