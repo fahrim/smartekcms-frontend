@@ -1,10 +1,16 @@
 'use strict';
 
+var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol" ? function (obj) {
+  return typeof obj === "undefined" ? "undefined" : _typeof2(obj);
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof2(obj);
+};
 
 require('./bootstrap');
 
@@ -15,6 +21,8 @@ var _moment2 = _interopRequireDefault(_moment);
 var _vueTrumbowyg = require('vue-trumbowyg');
 
 var _vueTrumbowyg2 = _interopRequireDefault(_vueTrumbowyg);
+
+require('../../overrides/trumbowyg.langs-router');
 
 require('trumbowyg/dist/ui/trumbowyg.css');
 
@@ -33,6 +41,17 @@ require('trumbowyg/dist/plugins/pasteembed/trumbowyg.pasteembed.js');
 require('trumbowyg/dist/plugins/table/ui/trumbowyg.table.css');
 
 require('trumbowyg/dist/plugins/table/trumbowyg.table.js');
+
+require('trumbowyg/dist/plugins/emoji/ui/trumbowyg.emoji.css');
+require('trumbowyg/dist/plugins/emoji/trumbowyg.emoji.js');
+
+require('trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js');
+
+require('trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js');
+
+require('trumbowyg/dist/plugins/indent/trumbowyg.indent.min.js');
+
+require('trumbowyg/dist/plugins/cleanpaste/trumbowyg.cleanpaste.js');
 
 require('../../overrides/trumbowyg.template');
 
@@ -61,6 +80,12 @@ var BaseForm = {
       type: String,
       default: function _default() {
         return this.locales instanceof Array && this.locales.length > 0 ? this.locales[0] : '';
+      }
+    },
+    cLocale: {
+      type: String,
+      default: function _default() {
+        return this.defaultLocale;
       }
     },
     sendEmptyLocales: {
@@ -143,24 +168,39 @@ var BaseForm = {
         placeholder: 'Type a text here',
         modules: {
           toolbar: {
-            container: [[{ header: [1, 2, 3, 4, 5, 6, false] }], ['bold', 'italic', 'underline', 'strike'], [{ list: 'ordered' }, { list: 'bullet' }], [{ color: [] }, { background: [] }], [{ align: [] }], ['link', 'image'], ['clean']]
+            container: [[{ header: [1, 2, 3, 4, 5, 6, false] }], ['bold', 'italic', 'underline', 'strike'], [{ list: 'ordered' }, { list: 'bullet' }], [{ color: [] }, { background: [] }], [{ align: [] }], ['link', 'image'], ['clean'], ['emoji', 'preformatted']]
           }
         }
       },
       mediaWysiwygConfig: {
+        lang: this.cLocale,
+        // resetCss: true,
+        // removeformatPasted: true,
         autogrow: true,
         imageWidthModalEdit: true,
         btnsDef: {
-          image: {
+          strong: {
+            dropdown: ['strong', 'em', 'del'],
+            ico: 'strong'
+          },
+          unorderedList: {
+            dropdown: ['unorderedList', 'orderedList'],
+            ico: 'unorderedList'
+          },
+          insertImage: {
             dropdown: ['insertImage', 'upload', 'base64'],
             ico: 'insertImage'
           },
-          align: {
+          justifyLeft: {
             dropdown: ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
             ico: 'justifyLeft'
+          },
+          indent: {
+            dropdown: ['indent', 'outdent'],
+            ico: 'indent'
           }
         },
-        btns: [['formatting'], ['strong', 'em', 'del'], ['align'], ['unorderedList', 'orderedList', 'table'], ['foreColor', 'backColor'], ['link', 'noembed', 'image'], ['template'], ['fullscreen', 'viewHTML']],
+        btns: [['undo', 'redo'], ['formatting', 'strong', 'fontsize'], ['justifyLeft', 'indent', 'lineheight', 'unorderedList'], ['table'], ['foreColor', 'backColor'], ['link', 'noembed', 'insertImage'], ['template'], ['emoji'], ['removeformat'], ['fullscreen', 'viewHTML']],
         plugins: {
           upload: {
             // https://alex-d.github.io/Trumbowyg/documentation/plugins/#plugin-upload
@@ -219,6 +259,22 @@ var BaseForm = {
               var url = getDeep(data, trumbowyg.o.plugins.upload.urlPropertyName.split('.'));
               trumbowyg.$c.trigger('tbwuploadsuccess', [trumbowyg, data, url]);
             }
+          },
+          fontsize: {
+            allowCustomSize: false, //true -> sizeList
+            // sizeList: [
+            //   '12px',
+            //   '14px',
+            //   '16px'
+            // ]
+          },
+          lineheight: {
+            allowCustomSize: false, //true -> sizeList
+            // sizeList: [
+            //   '14px',
+            //   '18px',
+            //   '22px'
+            // ]
           }
         }
       }
@@ -315,7 +371,7 @@ var BaseForm = {
     },
     onSuccess: function onSuccess(data) {
       this.submiting = false;
-      console.log(data.message)
+      console.log(data.message);
       this.$notify({ type: 'success', title: 'Success!', text: data.message ? data.message : 'Item successfully update.' });
       if (data.redirect) {
         window.location.replace(data.redirect);
