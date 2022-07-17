@@ -7,6 +7,7 @@
 div.trumbowyg-button-pane {
   background: #ffffff;
   border-bottom: 1px solid $mutedText;
+  display: inline-block;
   .trumbowyg-button-group::after {
     background: rgba(0, 0, 0, 0);
   }
@@ -21,8 +22,16 @@ div.trumbowyg-box {
     height: 18px;
     position: absolute;
     right: 10px;
-    top: 45px;
+    top: 79px;
     background-position: center;
+  }
+}
+
+@media (min-width: 1400px) {
+  div.trumbowyg-box {
+    &:after {
+      top: 45px;
+    }
   }
 }
 
