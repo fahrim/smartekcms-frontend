@@ -2,6 +2,7 @@
   "name": "smartekcms",
   "version": "1.0.2",
   "author": "smarteknoloji",
+  "license": "SEE LICENSE IN LICENSE",
   "description": "This is a frontend dependency of smartek CMS. Is a Laravel-based toolkit for building administration interfaces.",
   "main": "./dist/index.js",
   "bundleDependencies": false,
