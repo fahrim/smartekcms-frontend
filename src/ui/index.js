@@ -28,10 +28,13 @@ $(function () {
 
 	// remove empty nav titles when no children there
 	$('.nav-title').filter(function () {
-        if(!($(this).next().hasClass('nav-item') || $(this).next().hasClass('nav-dropdown')))
-        {
-            return true; //smarteknoloji fixed.06062021
-        }
+		if (!($(this).next().hasClass('nav-item') || $(this).next().hasClass('nav-dropdown'))) {
+			return true; //smarteknoloji fixed.06062021
+		}
+		//If there is only nav-item for version under nav-title, hide
+		if ($(this).next().filter('.nav-item').length === 1 && $(this).next().filter('.cms-version').length === 1) {
+			return true;
+		}
 	}).hide();
 });
 
