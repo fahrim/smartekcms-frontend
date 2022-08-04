@@ -26,7 +26,9 @@ var _UserDetailTooltip2 = _interopRequireDefault(_UserDetailTooltip);
 
 var _lodash = require('lodash');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+}
 
 Vue.directive('tooltip', _vTooltip.VTooltip);
 Vue.directive('close-popover', _vTooltip.VClosePopover);
@@ -66,10 +68,9 @@ exports.default = {
                 inline: true
             },
             bulkItems: {},
-            // bulkItemsSlug: {}, //smartek
             bulkCheckingAllLoader: false,
             dummy: null,
-            showHideColumn: false, //st.041221
+            showHideColumn: false
         };
     },
     props: {
@@ -107,6 +108,17 @@ exports.default = {
                     deleteDialog: {
                         title: 'Warning!',
                         text: 'Do you really want to delete this item?',
+                        yes: 'Yes, delete.',
+                        no: 'No, cancel.',
+                        success_title: 'Success!',
+                        success: 'Item successfully deleted.',
+                        error_title: 'Error!',
+                        error: 'An error has occured.'
+                    },
+                    bulkDeleteDialog: {
+                        title: 'Warning!',
+                        text_start: 'Do you really want to delete ', //ex: Do you really want to delete 1 selected items ?
+                        text_end: ' selected items ?', //methods->bulkDelete()::285
                         yes: 'Yes, delete.',
                         no: 'No, cancel.',
                         success_title: 'Success!',
@@ -250,7 +262,6 @@ exports.default = {
 
             if (bulkItemsToUncheck === null) {
                 this.bulkItems = {};
-                // this.bulkItemsSlug = {};
             } else {
                 Object.values(this.collection).map(function (_ref3) {
                     var id = _ref3.id;
@@ -264,28 +275,25 @@ exports.default = {
             var _this5 = this;
 
             var itemsToDelete = (0, _lodash.keys)((0, _lodash.pickBy)(this.bulkItems));
-            // var itemsToForgetCache = (0, _lodash.keys)((0, _lodash.pickBy)(this.bulkItemsSlug));
             var self = this;
 
             this.$modal.show('dialog', {
-                title: 'Warning!',
-                text: 'Do you really want to delete ' + this.clickedBulkItemsCount + ' selected items ?',
-                buttons: [{ title: 'No, cancel.' }, {
-                    title: '<span class="btn-dialog btn-danger">Yes, delete.<span>',
+                title: this.trans.bulkDeleteDialog.title,
+                text: this.trans.bulkDeleteDialog.text_start+' ' + this.clickedBulkItemsCount + ' '+this.trans.bulkDeleteDialog.text_end,
+                buttons: [{ title: this.trans.bulkDeleteDialog.no }, {
+                    title: '<span class="btn-dialog btn-danger">' + this.trans.bulkDeleteDialog.yes + '<span>',
                     handler: function handler() {
                         _this5.$modal.hide('dialog');
                         axios.post(url, {
                             data: {
-                                'ids': itemsToDelete,
-                                // 'slugs': itemsToForgetCache
+                                'ids': itemsToDelete
                             }
                         }).then(function (response) {
                             self.bulkItems = {};
-                            // self.bulkItemsSlug = {};
                             _this5.loadData();
-                            _this5.$notify({ type: 'success', title: 'Success!', text: response.data.message ? response.data.message : 'Item successfully deleted.' });
+                            _this5.$notify({ type: 'success', title: this.trans.bulkDeleteDialog.success_title, text: response.data.message ? response.data.message : this.trans.bulkDeleteDialog.success });
                         }, function (error) {
-                            _this5.$notify({ type: 'error', title: 'Error!', text: error.response.data.message ? error.response.data.message : 'An error has occured.' });
+                            _this5.$notify({ type: 'error', title: this.trans.bulkDeleteDialog.error_title, text: error.response.data.message ? error.response.data.message : this.trans.bulkDeleteDialog.error });
                         });
                     }
                 }]
@@ -344,17 +352,17 @@ exports.default = {
             var _this7 = this;
 
             this.$modal.show('dialog', {
-                title: 'Warning!',
-                text: 'Do you really want to delete this item?',
-                buttons: [{ title: 'No, cancel.' }, {
-                    title: '<span class="btn-dialog btn-danger">Yes, delete.<span>',
+                title: this.trans.deleteDialog.title,
+                text: this.trans.deleteDialog.text,
+                buttons: [{ title: this.trans.deleteDialog.no }, {
+                    title: '<span class="btn-dialog btn-danger">' + this.trans.deleteDialog.yes + '<span>',
                     handler: function handler() {
                         _this7.$modal.hide('dialog');
                         axios.delete(url).then(function (response) {
                             _this7.loadData();
-                            _this7.$notify({ type: 'success', title: 'Success!', text: response.data.message ? response.data.message : 'Item successfully deleted.' });
+                            _this7.$notify({ type: 'success', title: this.trans.deleteDialog.success_title, text: response.data.message ? response.data.message : this.trans.deleteDialog.success });
                         }, function (error) {
-                            _this7.$notify({ type: 'error', title: 'Error!', text: error.response.data.message ? error.response.data.message : 'An error has occured.' });
+                            _this7.$notify({ type: 'error', title: this.trans.deleteDialog.error_title, text: error.response.data.message ? error.response.data.message : this.trans.deleteDialog.error });
                         });
                     }
                 }]
@@ -370,7 +378,6 @@ exports.default = {
                 _this8.$notify({ type: 'error', title: 'Error!', text: error.response.data.message ? error.response.data.message : 'An error has occured.' });
             });
         },
-
 
         publishNow: function publishNow(url, row, dialogType) {
             var _this = this;
