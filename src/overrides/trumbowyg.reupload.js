@@ -1,11 +1,9 @@
-'use strict';
-
 (function ($) {
     'use strict';
 
     // My plugin default options
-
-    var defaultOptions = {};
+    var defaultOptions = {
+    };
 
     $.extend(true, $.trumbowyg, {
         // Add some translations
@@ -19,11 +17,14 @@
         // Add our plugin to Trumbowyg registred plugins
         plugins: {
             reupload: {
-                init: function init(trumbowyg) {
+                init: function(trumbowyg) {
                     // Fill current Trumbowyg instance with my plugin default options
-                    trumbowyg.o.plugins.reupload = $.extend(true, {}, defaultOptions, trumbowyg.o.plugins.reupload || {});
+                    trumbowyg.o.plugins.reupload = $.extend(true, {},
+                        defaultOptions,
+                        trumbowyg.o.plugins.reupload || {}
+                    );
 
-                    trumbowyg.o.imgDblClickHandler = function () {
+                    trumbowyg.o.imgDblClickHandler = (function() {
                         var t = trumbowyg;
 
                         return function () {
@@ -52,7 +53,7 @@
                                 alt: {
                                     label: t.lang.description,
                                     value: $img.attr('alt')
-                                }
+                                },
                             };
 
                             if (t.o.imageWidthModalEdit) {
@@ -99,11 +100,16 @@
                                     });
 
                                     if ($('.' + prefix + 'progress', $modal).length === 0) {
-                                        $('.' + prefix + 'modal-title', $modal).after($('<div/>', {
-                                            'class': prefix + 'progress'
-                                        }).append($('<div/>', {
-                                            'class': prefix + 'progress-bar'
-                                        })));
+                                        $('.' + prefix + 'modal-title', $modal)
+                                            .after(
+                                                $('<div/>', {
+                                                    'class': prefix + 'progress'
+                                                }).append(
+                                                    $('<div/>', {
+                                                        'class': prefix + 'progress-bar'
+                                                    })
+                                                )
+                                            );
                                     }
 
                                     $.ajax({
@@ -117,16 +123,19 @@
                                         processData: false,
                                         contentType: false,
 
-                                        progressUpload: function progressUpload(e) {
+                                        progressUpload: function (e) {
                                             $('.' + prefix + 'progress-bar').css('width', Math.round(e.loaded * 100 / e.total) + '%');
                                         },
 
-                                        success: function success(data) {
+                                        success: function (data) {
                                             trumbowyg.o.plugins.reupload.success(data, trumbowyg, $modal, v, $img);
                                         },
 
                                         error: trumbowyg.o.plugins.upload.error || function () {
-                                            trumbowyg.addErrorOnModalField($('input[type=file]', $modal), trumbowyg.lang.uploadError);
+                                            trumbowyg.addErrorOnModalField(
+                                                $('input[type=file]', $modal),
+                                                trumbowyg.lang.uploadError
+                                            );
                                             trumbowyg.$c.trigger('tbwuploaderror', [trumbowyg]);
                                         }
                                     });
@@ -134,13 +143,15 @@
                             });
                             return false;
                         };
-                    }();
+                    })();
+
                 },
-                tagHandler: function tagHandler(element, trumbowyg) {
+                tagHandler: function(element, trumbowyg) {
                     return [];
                 },
-                destroy: function destroy() {}
+                destroy: function() {
+                }
             }
         }
-    });
+    })
 })(jQuery);

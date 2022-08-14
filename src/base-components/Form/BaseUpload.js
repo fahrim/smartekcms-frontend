@@ -1,18 +1,8 @@
-'use strict';
+import dropzone from 'vue2-dropzone';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _vue2Dropzone = require('vue2-dropzone');
-
-var _vue2Dropzone2 = _interopRequireDefault(_vue2Dropzone);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var BaseUpload = {
+const BaseUpload = {
   components: {
-    Dropzone: _vue2Dropzone2.default
+    Dropzone: dropzone,
   },
   props: {
     url: {
@@ -23,12 +13,12 @@ var BaseUpload = {
       type: String,
       required: true
     },
-    maxNumberOfFiles: {
+    maxNumberOfFiles:{
       type: Number,
       required: false,
       default: 1
     },
-    maxFileSizeInMb: {
+    maxFileSizeInMb:{
       type: Number,
       required: false,
       default: 2
@@ -42,49 +32,63 @@ var BaseUpload = {
       required: false,
       default: 200
     },
-    uploadedImages: {
+    uploadedImages : {
       type: Array,
       required: false,
-      default: function _default() {
-        return [];
-      }
-    }
+      default: function () { return [] }
+    },
   },
-  data: function data() {
+  data: function () {
     return {
       mutableUploadedImages: this.uploadedImages,
       headers: {
         'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').getAttribute('content')
       }
-    };
+    }
   },
-  template: '<dropzone :id="collection" \n                       :url="url" \n                       v-bind:preview-template="template"\n                       v-on:vdropzone-success="onSuccess"\n                       v-on:vdropzone-error="onUploadError"\n                       v-on:vdropzone-removed-file="onFileDelete"\n                       v-on:vdropzone-file-added="onFileAdded"\n                       :useFontAwesome="true" \n                       :ref="collection"\n                       :maxNumberOfFiles="maxNumberOfFiles"\n                       :maxFileSizeInMB="maxFileSizeInMb"\n                       :acceptedFileTypes="acceptedFileTypes"\n                       :thumbnailWidth="thumbnailWidth"\n                       :headers="headers">\n                \n                <input type="hidden" name="collection" :value="collection">\n            </dropzone>',
-  mounted: function mounted() {
+  template: `<dropzone :id="collection" 
+                       :url="url" 
+                       v-bind:preview-template="template"
+                       v-on:vdropzone-success="onSuccess"
+                       v-on:vdropzone-error="onUploadError"
+                       v-on:vdropzone-removed-file="onFileDelete"
+                       v-on:vdropzone-file-added="onFileAdded"
+                       :useFontAwesome="true" 
+                       :ref="collection"
+                       :maxNumberOfFiles="maxNumberOfFiles"
+                       :maxFileSizeInMB="maxFileSizeInMb"
+                       :acceptedFileTypes="acceptedFileTypes"
+                       :thumbnailWidth="thumbnailWidth"
+                       :headers="headers">
+                
+                <input type="hidden" name="collection" :value="collection">
+            </dropzone>`,
+  mounted: function () {
     this.attachAlreadyUploadedMedia();
   },
   methods: {
-    onSuccess: function onSuccess(file, response) {
-      if (!file.type.includes('image')) {
-        setTimeout(function () {
+    onSuccess: function (file, response) {
+      if(!file.type.includes('image')) {
+        setTimeout(function() {
           //FIXME jquery
           $(file.previewElement).removeClass('dz-file-preview');
         }, 3000);
       }
     },
 
-    onUploadError: function onUploadError(file, error) {
-      var errorMessage = typeof error == 'string' ? error : error.message;
-      this.$notify({ type: 'error', title: 'Error!', text: errorMessage });
+    onUploadError: function (file, error) {
+      let errorMessage = typeof error == 'string' ? error : error.message;
+      this.$notify({ type: 'error', title: 'Error!', text: errorMessage});
       $(file.previewElement).find('.dz-error-message span').text(errorMessage);
     },
 
-    onFileAdded: function onFileAdded(file) {
+    onFileAdded: function(file) {
       this.placeIcon(file);
     },
 
-    onFileDelete: function onFileDelete(file, error, xhr) {
-      var deletedFileIndex = _.findIndex(this.mutableUploadedImages, { url: file.url });
-      if (this.mutableUploadedImages[deletedFileIndex]) {
+    onFileDelete: function (file, error, xhr) {
+      var deletedFileIndex = _.findIndex(this.mutableUploadedImages, {url: file.url});
+      if(this.mutableUploadedImages[deletedFileIndex]) {
         this.mutableUploadedImages[deletedFileIndex]['deleted'] = true;
 
         //dontSubstractMaxFiles fix
@@ -93,55 +97,55 @@ var BaseUpload = {
       }
     },
 
-    attachAlreadyUploadedMedia: function attachAlreadyUploadedMedia() {
-      var _this = this;
+    attachAlreadyUploadedMedia: function() {
+      this.$nextTick( () => {
+        if(this.mutableUploadedImages) {
+          _.each(this.mutableUploadedImages, (file, key) => {
 
-      this.$nextTick(function () {
-        if (_this.mutableUploadedImages) {
-          _.each(_this.mutableUploadedImages, function (file, key) {
-
-            _this.$refs[_this.collection].manuallyAddFile({ name: file['name'],
-              size: file['size'],
-              type: file['type'],
-              url: file['url']
-            }, file['thumb_url'], false, false, {
-              dontSubstractMaxFiles: false,
-              addToFiles: true
-            });
+            this.$refs[this.collection].manuallyAddFile({ name: file['name'],
+                  size: file['size'],
+                  type: file['type'],
+                  url: file['url'],
+                },
+                file['thumb_url'],
+                false,
+                false,
+                {
+                  dontSubstractMaxFiles: false,
+                  addToFiles: true
+                });
           });
         }
-      });
+      })
     },
 
-    getFiles: function getFiles() {
-      var _this2 = this;
-
+    getFiles: function() {
       var files = [];
 
-      _.each(this.mutableUploadedImages, function (file, key) {
-        if (file.deleted) {
+      _.each(this.mutableUploadedImages, (file, key) => {
+        if(file.deleted) {
           files.push({
             id: file.id,
-            collection_name: _this2.collection,
-            action: 'delete'
+            collection_name: this.collection,
+            action: 'delete',
           });
         }
       });
 
-      _.each(this.$refs[this.collection].getAcceptedFiles(), function (file, key) {
+      _.each(this.$refs[this.collection].getAcceptedFiles(), (file, key) => {
         var response = JSON.parse(file.xhr.response);
 
-        if (response.path) {
+        if(response.path) {
           files.push({
             id: file.id,
-            collection_name: _this2.collection,
+            collection_name: this.collection,
             path: response.path,
             action: file.deleted ? 'delete' : 'add', //TODO: update ie. meta_data.name
             meta_data: {
-              name: file.name, //TODO: editable in the future
+              name: file.name,  //TODO: editable in the future
               file_name: file.name,
               width: file.width,
-              height: file.height
+              height: file.height,
             }
           });
         }
@@ -150,39 +154,61 @@ var BaseUpload = {
       return files;
     },
 
-    placeIcon: function placeIcon(file) {
+    placeIcon: function(file) {
       //FIXME cele to je jqueryoidne, asi si budeme musiet spravit vlastny vue wrapper, tento je zbugovany
       var $previewElement = $(file.previewElement);
 
-      if (file.url) {
-        $previewElement.find('.dz-filename').html('<a href="' + file.url + '" target="_BLANK" class="dz-btn dz-custom-download">' + file.name + '</a>');
+      if(file.url) {
+        $previewElement.find('.dz-filename').html('<a href="'+file.url+'" target="_BLANK" class="dz-btn dz-custom-download">'+file.name+'</a>');
       }
 
-      if (file.type.includes('image')) {
+      if(file.type.includes('image')) {
         //nothing, default thumb
-      } else if (file.type.includes('pdf')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-pdf-o"></i><p>' + file.name + '</p>');
-      } else if (file.type.includes('word')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-word-o"></i><p>' + file.name + '</p>');
-      } else if (file.type.includes('spreadsheet') || file.type.includes('csv')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-excel-o"></i><p>' + file.name + '</p>');
-      } else if (file.type.includes('presentation')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-powerpoint-o"></i><p>' + file.name + '</p>');
-      } else if (file.type.includes('video')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-video-o"></i><p>' + file.name + '</p>');
-      } else if (file.type.includes('text')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-text-o"></i><p>' + file.name + '</p>');
-      } else if (file.type.includes('zip') || file.type.includes('rar')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-archive-o"></i><p>' + file.name + '</p>');
-      } else {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-o"></i><p>' + file.name + '</p>');
+      }
+      else if(file.type.includes('pdf')) {
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-pdf-o"></i><p>'+file.name+'</p>');
+      }
+      else if(file.type.includes('word')) {
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-word-o"></i><p>'+file.name+'</p>');
+      }
+      else if(file.type.includes('spreadsheet') || file.type.includes('csv')) {
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-excel-o"></i><p>'+file.name+'</p>');
+      }
+      else if(file.type.includes('presentation')) {
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-powerpoint-o"></i><p>'+file.name+'</p>');
+      }
+      else if(file.type.includes('video')) {
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-video-o"></i><p>'+file.name+'</p>');
+      }
+      else if(file.type.includes('text')) {
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-text-o"></i><p>'+file.name+'</p>');
+      }
+      else if(file.type.includes('zip') || file.type.includes('rar')) {
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-archive-o"></i><p>'+file.name+'</p>');
+      }
+      else {
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-o"></i><p>'+file.name+'</p>');
       }
     },
 
-    template: function template() {
-      return '\n              <div class="dz-preview dz-file-preview">\n                  <div class="dz-image">\n                      <img data-dz-thumbnail />\n                  </div>\n                  <div class="dz-details">\n                    <div class="dz-size"><span data-dz-size></span></div>\n                    <div class="dz-filename"></div>\n                  </div>\n                  <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>\n                  <div class="dz-error-message"><span data-dz-errormessage></span></div>\n                  <div class="dz-success-mark"><i class="fa fa-check"></i></div>\n                  <div class="dz-error-mark"><i class="fa fa-close"></i></div>\n              </div>\n          ';
+    template: function() {
+      return `
+              <div class="dz-preview dz-file-preview">
+                  <div class="dz-image">
+                      <img data-dz-thumbnail />
+                  </div>
+                  <div class="dz-details">
+                    <div class="dz-size"><span data-dz-size></span></div>
+                    <div class="dz-filename"></div>
+                  </div>
+                  <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+                  <div class="dz-error-message"><span data-dz-errormessage></span></div>
+                  <div class="dz-success-mark"><i class="fa fa-check"></i></div>
+                  <div class="dz-error-mark"><i class="fa fa-close"></i></div>
+              </div>
+          `;
     }
   }
-};
+}
 
-exports.default = BaseUpload;
+export default BaseUpload;

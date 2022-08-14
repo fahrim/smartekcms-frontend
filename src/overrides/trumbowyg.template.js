@@ -1,10 +1,7 @@
-'use strict';
-
 (function ($) {
     'use strict';
 
     // Adds the language variables
-
     $.extend(true, $.trumbowyg, {
         langs: {
             en: {
@@ -32,10 +29,10 @@
     $.extend(true, $.trumbowyg, {
         plugins: {
             template: {
-                shouldInit: function shouldInit(trumbowyg) {
+                shouldInit: function (trumbowyg) {
                     return trumbowyg.o.plugins.hasOwnProperty('templates');
                 },
-                init: function init(trumbowyg) {
+                init: function (trumbowyg) {
                     trumbowyg.addBtnDef('template', {
                         dropdown: templateSelector(trumbowyg),
                         hasIcon: false,
@@ -53,7 +50,7 @@
 
         $.each(available, function (index, template) {
             trumbowyg.addBtnDef('template_' + index, {
-                fn: function fn() {
+                fn: function () {
                     trumbowyg.execCmd('insertHTML', template.html + '<br>');
                 },
                 hasIcon: false,

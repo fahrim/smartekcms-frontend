@@ -1,15 +1,7 @@
-'use strict';
+import Vue from 'vue';
 
-var _vue = require('vue');
+import BaseForm from '../base-components/Form/BaseForm';
 
-var _vue2 = _interopRequireDefault(_vue);
-
-var _BaseForm = require('../base-components/Form/BaseForm');
-
-var _BaseForm2 = _interopRequireDefault(_BaseForm);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_vue2.default.component('auth-form', {
-    mixins: [_BaseForm2.default]
+Vue.component('auth-form', {
+    mixins: [BaseForm]
 });

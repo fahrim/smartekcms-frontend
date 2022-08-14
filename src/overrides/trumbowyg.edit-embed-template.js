@@ -1,10 +1,7 @@
-'use strict';
-
 (function ($) {
     'use strict';
 
     // My plugin default options
-
     var defaultOptions = {
         noEmbedEndpoint: 'https://noembed.com/embed?nowrap=on'
     };
@@ -13,18 +10,21 @@
         // Add some translations
         langs: {
             en: {
-                editNoEmbedTemplate: 'Edit embed'
+                editNoEmbedTemplate: 'Edit embed',
             }
         },
         // Add our plugin to Trumbowyg registred plugins
         plugins: {
             editNoEmbedTemplate: {
-                init: function init(trumbowyg) {
+                init: function(trumbowyg) {
                     // Fill current Trumbowyg instance with my plugin default options
-                    trumbowyg.o.plugins.editNoEmbedTemplate = $.extend(true, {}, defaultOptions, trumbowyg.o.plugins.editNoEmbedTemplate || {});
+                    trumbowyg.o.plugins.editNoEmbedTemplate = $.extend(true, {},
+                        defaultOptions,
+                        trumbowyg.o.plugins.editNoEmbedTemplate || {}
+                    );
 
-                    setTimeout(function () {
-                        trumbowyg.$ed.on('dblclick', '.wysiwyg-noembed', function () {
+                    setTimeout(function(){
+                        trumbowyg.$ed.on('dblclick', '.wysiwyg-noembed', function(){
                             var $iframe = $(this).find('iframe');
                             var $editor = $iframe.closest('.trumbowyg-editor');
                             var options = {
@@ -51,22 +51,31 @@
                                                 trumbowyg.closeModal();
                                             }, 250);
                                         } else {
-                                            trumbowyg.addErrorOnModalField($('input[type=text]', $modal), data.error);
+                                            trumbowyg.addErrorOnModalField(
+                                                $('input[type=text]', $modal),
+                                                data.error
+                                            );
                                         }
                                     },
                                     error: trumbowyg.o.plugins.editNoEmbedTemplate.error || function () {
-                                        trumbowyg.addErrorOnModalField($('input[type=text]', $modal), trumbowyg.lang.noembedError);
+                                        trumbowyg.addErrorOnModalField(
+                                            $('input[type=text]', $modal),
+                                            trumbowyg.lang.noembedError
+                                        );
                                     }
                                 });
                             });
                         });
                     }, 300);
+
+
                 },
-                tagHandler: function tagHandler(element, trumbowyg) {
+                tagHandler: function(element, trumbowyg) {
                     return [];
                 },
-                destroy: function destroy() {}
+                destroy: function() {
+                }
             }
         }
-    });
+    })
 })(jQuery);

@@ -1,12 +1,11 @@
-'use strict';
+import 'popper.js';
 
-require('popper.js');
+import 'bootstrap';
 
-require('bootstrap');
+import '@coreui/coreui';
 
-require('@coreui/coreui');
-
-$(function () {
+(function ($) {
+	'use strict';
 	// spinner buttons
 	$('.btn-spinner').on('click', function (e) {
 		if (!(e.shiftKey || e.ctrlKey || e.metaKey)) {
@@ -36,7 +35,8 @@ $(function () {
 			return true;
 		}
 	}).hide();
-});
+
+})(jQuery);
 
 //coreui sidebar modify
-require('./custom/reformat-sidebar');
+import './custom/reformat-sidebar';
