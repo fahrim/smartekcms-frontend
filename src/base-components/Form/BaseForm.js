@@ -1,73 +1,29 @@
-'use strict';
+import './bootstrap';
+import moment from 'moment';
+import VueTrumbowyg from 'vue-trumbowyg';
+import '../../overrides/trumbowyg.langs-router';
+import 'trumbowyg/dist/ui/trumbowyg.css';
+import 'trumbowyg/dist/plugins/colors/trumbowyg.colors';
+import 'trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.css';
+import 'trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js';
+import 'trumbowyg/dist/plugins/upload/trumbowyg.upload.js';
+import 'trumbowyg/dist/plugins/noembed/trumbowyg.noembed.js';
+import 'trumbowyg/dist/plugins/pasteembed/trumbowyg.pasteembed.js';
+import 'trumbowyg/dist/plugins/table/ui/trumbowyg.table.css';
+import 'trumbowyg/dist/plugins/table/trumbowyg.table.js';
+import 'trumbowyg/dist/plugins/emoji/ui/trumbowyg.emoji.css';
+import 'trumbowyg/dist/plugins/emoji/trumbowyg.emoji.js';
+import 'trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js';
+import 'trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js';
+import 'trumbowyg/dist/plugins/indent/trumbowyg.indent.min.js';
+import 'trumbowyg/dist/plugins/cleanpaste/trumbowyg.cleanpaste.js';
+import '../../overrides/trumbowyg.template';
+import '../../overrides/trumbowyg.reupload';
+import '../../overrides/trumbowyg.edit-embed-template';
+import UserDetailTooltip from "../Listing/components/UserDetailTooltip";
+Vue.component('wysiwyg', VueTrumbowyg);
 
-var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _typeof = typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol" ? function (obj) {
-  return typeof obj === "undefined" ? "undefined" : _typeof2(obj);
-} : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof2(obj);
-};
-
-require('./bootstrap');
-
-var _moment = require('moment');
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _vueTrumbowyg = require('vue-trumbowyg');
-
-var _vueTrumbowyg2 = _interopRequireDefault(_vueTrumbowyg);
-
-require('../../overrides/trumbowyg.langs-router');
-
-require('trumbowyg/dist/ui/trumbowyg.css');
-
-require('trumbowyg/dist/plugins/colors/trumbowyg.colors');
-
-require('trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.css');
-
-require('trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js');
-
-require('trumbowyg/dist/plugins/upload/trumbowyg.upload.js');
-
-require('trumbowyg/dist/plugins/noembed/trumbowyg.noembed.js');
-
-require('trumbowyg/dist/plugins/pasteembed/trumbowyg.pasteembed.js');
-
-require('trumbowyg/dist/plugins/table/ui/trumbowyg.table.css');
-
-require('trumbowyg/dist/plugins/table/trumbowyg.table.js');
-
-require('trumbowyg/dist/plugins/emoji/ui/trumbowyg.emoji.css');
-require('trumbowyg/dist/plugins/emoji/trumbowyg.emoji.js');
-
-require('trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js');
-
-require('trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js');
-
-require('trumbowyg/dist/plugins/indent/trumbowyg.indent.min.js');
-
-require('trumbowyg/dist/plugins/cleanpaste/trumbowyg.cleanpaste.js');
-
-require('../../overrides/trumbowyg.template');
-
-require('../../overrides/trumbowyg.reupload');
-
-require('../../overrides/trumbowyg.edit-embed-template');
-
-var _UserDetailTooltip = require('../Listing/components/UserDetailTooltip');
-
-var _UserDetailTooltip2 = _interopRequireDefault(_UserDetailTooltip);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-Vue.component('wysiwyg', _vueTrumbowyg2.default);
-
-var BaseForm = {
+const BaseForm = {
   props: {
     action: {
       type: String,
@@ -78,25 +34,27 @@ var BaseForm = {
     },
     defaultLocale: {
       type: String,
-      default: function _default() {
-        return this.locales instanceof Array && this.locales.length > 0 ? this.locales[0] : '';
+      default: function() {
+        return this.locales instanceof Array && this.locales.length > 0
+            ? this.locales[0]
+            : '';
       }
     },
     cLocale: {
       type: String,
-      default: function _default() {
+      default: function() {
         return this.defaultLocale;
       }
     },
     sendEmptyLocales: {
       type: Boolean,
-      default: function _default() {
+      default: function() {
         return true;
       }
     },
     data: {
       type: Object,
-      default: function _default() {
+      default: function() {
         return {};
       }
     },
@@ -106,12 +64,12 @@ var BaseForm = {
     }
   },
   components: {
-    'user-detail-tooltip': _UserDetailTooltip2.default
+    'user-detail-tooltip': UserDetailTooltip
   },
 
-  created: function created() {
+  created: function() {
     if (!!this.locales && this.locales.length > 0) {
-      var form = this.form;
+      let form = this.form;
       // this.locales.map(function(l) {
       //     if (!_.has(form, l)) {
       //         _.set(form, l, {})
@@ -128,8 +86,8 @@ var BaseForm = {
     window.addEventListener('resize', this.onResize);
   },
 
-  data: function data() {
-    var that = this;
+  data: function() {
+    const that = this;
 
     return {
       form: {},
@@ -168,7 +126,16 @@ var BaseForm = {
         placeholder: 'Type a text here',
         modules: {
           toolbar: {
-            container: [[{ header: [1, 2, 3, 4, 5, 6, false] }], ['bold', 'italic', 'underline', 'strike'], [{ list: 'ordered' }, { list: 'bullet' }], [{ color: [] }, { background: [] }], [{ align: [] }], ['link', 'image'], ['clean'], ['emoji', 'preformatted']]
+            container: [
+              [{ header: [1, 2, 3, 4, 5, 6, false] }],
+              ['bold', 'italic', 'underline', 'strike'],
+              [{ list: 'ordered' }, { list: 'bullet' }],
+              [{ color: [] }, { background: [] }],
+              [{ align: [] }],
+              ['link', 'image'],
+              ['clean'],
+              ['emoji', 'preformatted']
+            ]
           }
         }
       },
@@ -200,13 +167,24 @@ var BaseForm = {
             ico: 'indent'
           }
         },
-        btns: [['undo', 'redo'], ['formatting', 'strong', 'fontsize'], ['justifyLeft', 'indent', 'lineheight', 'unorderedList'], ['table'], ['foreColor', 'backColor'], ['link', 'noembed', 'insertImage'], ['template'], ['emoji'], ['removeformat'], ['fullscreen', 'viewHTML']],
+        btns: [
+          ['undo', 'redo'],
+          ['formatting', 'strong', 'fontsize'],
+          ['justifyLeft', 'indent', 'lineheight', 'unorderedList'],
+          ['table'],
+          ['foreColor', 'backColor'],
+          ['link', 'noembed', 'insertImage'],
+          ['template'],
+          ['emoji'],
+          ['removeformat'],
+          ['fullscreen', 'viewHTML']
+        ],
         plugins: {
           upload: {
             // https://alex-d.github.io/Trumbowyg/documentation/plugins/#plugin-upload
             serverPath: '/admin/wysiwyg-media',
             imageWidthModalEdit: true,
-            success: function success(data, trumbowyg, $modal, values) {
+            success(data, trumbowyg, $modal, values) {
               that.wysiwygMedia.push(data.mediaId);
 
               function getDeep(object, propertyParts) {
@@ -218,63 +196,79 @@ var BaseForm = {
                     return object[mainProperty];
                   }
 
-                  if ((typeof object === 'undefined' ? 'undefined' : _typeof(object)) === 'object') {
+                  if (typeof object === 'object') {
                     return getDeep(object[mainProperty], otherProperties);
                   }
                 }
                 return object;
               }
 
-              if (!!getDeep(data, trumbowyg.o.plugins.upload.statusPropertyName.split('.'))) {
-                var url = getDeep(data, trumbowyg.o.plugins.upload.urlPropertyName.split('.'));
+              if (
+                  !!getDeep(
+                      data,
+                      trumbowyg.o.plugins.upload.statusPropertyName.split('.')
+                  )
+              ) {
+                var url = getDeep(
+                    data,
+                    trumbowyg.o.plugins.upload.urlPropertyName.split('.')
+                );
                 trumbowyg.execCmd('insertImage', url, false, true);
-                var $img = $('img[src="' + url + '"]:not([alt])', trumbowyg.$box);
+                var $img = $(
+                    'img[src="' + url + '"]:not([alt])',
+                    trumbowyg.$box
+                );
                 $img.attr('alt', values.alt);
-                if (trumbowyg.o.imageWidthModalEdit && parseInt(values.width) > 0) {
+                if (
+                    trumbowyg.o.imageWidthModalEdit &&
+                    parseInt(values.width) > 0
+                ) {
                   $img.attr({
                     width: values.width
                   });
                 }
-                setTimeout(function () {
+                setTimeout(function() {
                   trumbowyg.closeModal();
                 }, 250);
-                trumbowyg.$c.trigger('tbwuploadsuccess', [trumbowyg, data, url]);
+                trumbowyg.$c.trigger('tbwuploadsuccess', [
+                  trumbowyg,
+                  data,
+                  url
+                ]);
               } else {
-                trumbowyg.addErrorOnModalField($('input[type=file]', $modal), trumbowyg.lang[data.message]);
+                trumbowyg.addErrorOnModalField(
+                    $('input[type=file]', $modal),
+                    trumbowyg.lang[data.message]
+                );
                 trumbowyg.$c.trigger('tbwuploaderror', [trumbowyg, data]);
               }
             }
           },
           reupload: {
-            success: function success(data, trumbowyg, $modal, values, $img) {
+            success(data, trumbowyg, $modal, values, $img) {
               that.wysiwygMedia.push(data.mediaId);
 
               $img.attr({
                 src: data.file
               });
               trumbowyg.execCmd('insertHTML');
-              setTimeout(function () {
+              setTimeout(function() {
                 trumbowyg.closeModal();
               }, 250);
-              var url = getDeep(data, trumbowyg.o.plugins.upload.urlPropertyName.split('.'));
+              var url = getDeep(
+                  data,
+                  trumbowyg.o.plugins.upload.urlPropertyName.split('.')
+              );
               trumbowyg.$c.trigger('tbwuploadsuccess', [trumbowyg, data, url]);
             }
           },
           fontsize: {
-            allowCustomSize: false, //true -> sizeList
-            // sizeList: [
-            //   '12px',
-            //   '14px',
-            //   '16px'
-            // ]
+            allowCustomSize: false //true -> sizeList
+            // sizeList: ['12px', '14px', '16px']
           },
           lineheight: {
-            allowCustomSize: false, //true -> sizeList
-            // sizeList: [
-            //   '14px',
-            //   '18px',
-            //   '22px'
-            // ]
+            allowCustomSize: false //true -> sizeList
+            // sizeList: ['14px', '18px', '22px']
           }
         }
       }
@@ -282,57 +276,54 @@ var BaseForm = {
   },
 
   computed: {
-    otherLocales: function otherLocales() {
-      var _this = this;
-
-      return this.locales.filter(function (x) {
-        return x != _this.defaultLocale;
-      });
+    otherLocales: function() {
+      return this.locales.filter(x => x != this.defaultLocale);
     },
-    showLocalizedValidationError: function showLocalizedValidationError() {
-      var _this2 = this;
-
+    showLocalizedValidationError: function() {
       // TODO ked sme neni na mobile, tak pozerat zo vsetkych
-      return this.otherLocales.some(function (lang) {
-        return _this2.errors.items.some(function (item) {
-          return item.field.endsWith('_' + lang) || item.field.startsWith(lang + '_');
+      return this.otherLocales.some(lang => {
+        return this.errors.items.some(item => {
+          return (
+              item.field.endsWith('_' + lang) || item.field.startsWith(lang + '_')
+          );
         });
       });
     }
   },
   filters: {
-    date: function date(date) {
-      var format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'YYYY-MM-DD';
-
-      var date = (0, _moment2.default)(date);
+    date: function (date, format = 'YYYY-MM-DD') {
+      var date = moment(date);
       return date.isValid() ? date.format(format) : "";
     },
-    datetime: function datetime(_datetime) {
-      var format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'YYYY-MM-DD HH:mm:ss';
-
-      var date = (0, _moment2.default)(_datetime);
+    datetime: function (datetime, format = 'YYYY-MM-DD HH:mm:ss') {
+      var date = moment(datetime);
       return date.isValid() ? date.format(format) : "";
     },
-    time: function time(_time) {
-      var format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'HH:mm:ss';
-
+    time: function (time, format = 'HH:mm:ss') {
       // '2000-01-01' is here just because momentjs needs a date
-      var date = (0, _moment2.default)('2000-01-01 ' + _time);
+      var date = moment('2000-01-01 ' + time);
       return date.isValid() ? date.format(format) : "";
     }
   },
+  mounted() {
+    this.form.published_at = moment(this.form.published_at).format('YYYY-MM-DD HH:mm:ss');
+  },
   methods: {
-    getPostData: function getPostData() {
-      var _this3 = this;
-
+    getPostData() {
       if (this.mediaCollections) {
-        this.mediaCollections.forEach(function (collection, index, arr) {
-          if (_this3.form[collection]) {
-            console.warn("MediaUploader warning: Media input must have a unique name, '" + collection + "' is already defined in regular inputs.");
+        this.mediaCollections.forEach((collection, index, arr) => {
+          if (this.form[collection]) {
+            console.warn(
+                "MediaUploader warning: Media input must have a unique name, '" +
+                collection +
+                "' is already defined in regular inputs."
+            );
           }
 
-          if (_this3.$refs[collection + '_uploader']) {
-            _this3.form[collection] = _this3.$refs[collection + '_uploader'].getFiles();
+          if (this.$refs[collection + '_uploader']) {
+            this.form[collection] = this.$refs[
+            collection + '_uploader'
+                ].getFiles();
           }
         });
       }
@@ -340,12 +331,10 @@ var BaseForm = {
 
       return this.form;
     },
-    onSubmit: function onSubmit() {
-      var _this4 = this;
-
-      return this.$validator.validateAll().then(function (result) {
+    onSubmit() {
+      return this.$validator.validateAll().then(result => {
         if (!result) {
-          _this4.$notify({
+          this.$notify({
             type: 'error',
             title: 'Error!',
             text: 'The form contains invalid fields.'
@@ -353,36 +342,35 @@ var BaseForm = {
           return false;
         }
 
-        var data = _this4.form;
-        if (!_this4.sendEmptyLocales) {
-          data = _.omit(_this4.form, _this4.locales.filter(function (locale) {
-            return _.isEmpty(_this4.form[locale]);
-          }));
+        var data = this.form;
+        if (!this.sendEmptyLocales) {
+          data = _.omit(
+              this.form,
+              this.locales.filter(locale => _.isEmpty(this.form[locale]))
+          );
         }
 
-        _this4.submiting = true;
+        this.submiting = true;
 
-        axios.post(_this4.action, _this4.getPostData()).then(function (response) {
-          return _this4.onSuccess(response.data);
-        }).catch(function (errors) {
-          return _this4.onFail(errors.response.data);
-        });
+        axios
+            .post(this.action, this.getPostData())
+            .then(response => this.onSuccess(response.data))
+            .catch(errors => this.onFail(errors.response.data));
       });
     },
-    onSuccess: function onSuccess(data) {
+    onSuccess(data) {
       this.submiting = false;
-      console.log(data.message);
       this.$notify({ type: 'success', title: 'Success!', text: data.message ? data.message : 'Item successfully update.' });
       if (data.redirect) {
         window.location.replace(data.redirect);
       }
     },
-    onFail: function onFail(data) {
+    onFail(data) {
       this.submiting = false;
-      if (_typeof(data.errors) !== (typeof undefined === 'undefined' ? 'undefined' : _typeof(undefined))) {
+      if(typeof data.errors !== typeof undefined) {
         var bag = this.$validator.errors;
         bag.clear();
-        Object.keys(data.errors).map(function (key) {
+        Object.keys(data.errors).map(key => {
           var splitted = key.split('.', 2);
           // we assume that first dot divides column and locale (TODO maybe refactor this and make it more general)
           if (splitted.length > 1) {
@@ -397,7 +385,7 @@ var BaseForm = {
             });
           }
         });
-        if (_typeof(data.message) === (typeof undefined === 'undefined' ? 'undefined' : _typeof(undefined))) {
+        if (typeof data.message === typeof undefined) {
           this.$notify({
             type: 'error',
             title: 'Error!',
@@ -405,7 +393,7 @@ var BaseForm = {
           });
         }
       }
-      if (_typeof(data.message) !== (typeof undefined === 'undefined' ? 'undefined' : _typeof(undefined))) {
+      if (typeof data.message !== typeof undefined) {
         this.$notify({
           type: 'error',
           title: 'Error!',
@@ -413,26 +401,26 @@ var BaseForm = {
         });
       }
     },
-    getLocalizedFormDefaults: function getLocalizedFormDefaults() {
+    getLocalizedFormDefaults() {
       var object = {};
-      this.locales.forEach(function (currentValue, index, arr) {
+      this.locales.forEach((currentValue, index, arr) => {
         object[currentValue] = null;
       });
       return object;
     },
-    showLocalization: function showLocalization() {
+    showLocalization() {
       this.isFormLocalized = true;
       this.currentLocale = this.otherLocales[0];
       $('.container-xl').addClass('width-auto');
     },
-    hideLocalization: function hideLocalization() {
+    hideLocalization() {
       this.isFormLocalized = false;
       $('.container-xl').removeClass('width-auto');
     },
-    validate: function validate(event) {
+    validate(event) {
       this.$validator.errors.remove(event.target.name);
     },
-    shouldShowLangGroup: function shouldShowLangGroup(locale) {
+    shouldShowLangGroup(locale) {
       if (!this.onSmallScreen) {
         if (this.defaultLocale == locale) return true;
 
@@ -441,10 +429,10 @@ var BaseForm = {
         return this.currentLocale == locale;
       }
     },
-    onResize: function onResize() {
+    onResize() {
       this.onSmallScreen = window.innerWidth < this.responsiveBreakpoint;
     }
   }
 };
 
-exports.default = BaseForm;
+export default BaseForm;
