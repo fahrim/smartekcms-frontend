@@ -69,7 +69,7 @@ const BaseForm = {
 
   created: function() {
     if (!!this.locales && this.locales.length > 0) {
-      let form = this.form;
+      // let form = this.form;
       // this.locales.map(function(l) {
       //     if (!_.has(form, l)) {
       //         _.set(form, l, {})
@@ -277,7 +277,7 @@ const BaseForm = {
 
   computed: {
     otherLocales: function() {
-      return this.locales.filter(x => x != this.defaultLocale);
+      return this.locales.filter(x => x !== this.defaultLocale);
     },
     showLocalizedValidationError: function() {
       // TODO ked sme neni na mobile, tak pozerat zo vsetkych
@@ -306,7 +306,7 @@ const BaseForm = {
     }
   },
   mounted() {
-    this.form.published_at = moment(this.form.published_at).format('YYYY-MM-DD HH:mm:ss');
+    this.form.published_at = this.form.published_at ? moment(this.form.published_at).format('YYYY-MM-DD HH:mm:ss') : '';
   },
   methods: {
     getPostData() {
@@ -422,11 +422,11 @@ const BaseForm = {
     },
     shouldShowLangGroup(locale) {
       if (!this.onSmallScreen) {
-        if (this.defaultLocale == locale) return true;
+        if (this.defaultLocale === locale) return true;
 
-        return this.isFormLocalized && this.currentLocale == locale;
+        return this.isFormLocalized && this.currentLocale === locale;
       } else {
-        return this.currentLocale == locale;
+        return this.currentLocale === locale;
       }
     },
     onResize() {
