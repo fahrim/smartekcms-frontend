@@ -61,7 +61,13 @@ const BaseForm = {
     responsiveBreakpoint: {
       type: Number,
       default: 850
-    }
+    },
+    mediaCollectionNames: {
+      type: Array,
+      default: function() {
+        return ['img', 'cover'];
+      }
+    },
   },
   components: {
     'user-detail-tooltip': UserDetailTooltip
@@ -306,7 +312,13 @@ const BaseForm = {
     }
   },
   mounted() {
+    //Published at
     this.form.published_at = this.form.published_at ? moment(this.form.published_at).format('YYYY-MM-DD HH:mm:ss') : '';
+
+    //Media Collections
+    this.mediaCollections = this.mediaCollectionNames.flatMap(mc =>
+        this.locales.map(i => mc + i)
+    );
   },
   methods: {
     getPostData() {
