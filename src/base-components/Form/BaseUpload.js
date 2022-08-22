@@ -60,7 +60,7 @@ const BaseUpload = {
         acceptedFiles: this.acceptedFileTypes,
         thumbnailWidth: this.thumbnailWidth,
         uploadedImages: this.uploadedImages,
-        dictDefaultMessage: "<i class='fa fa-cloud-upload d-block'></i>${this.trans.dropzoneText.upload}",
+        dictDefaultMessage: "<i class='fa fa-cloud-upload d-block'></i>"+this.trans.dropzoneText.upload,
         addRemoveLinks: true,
         dictRemoveFile: this.trans.dropzoneText.remove,
         dictCancelUpload: this.trans.dropzoneText.cancel,
