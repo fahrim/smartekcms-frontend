@@ -1,4 +1,5 @@
 import dropzone from 'vue2-dropzone';
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 
 const BaseUpload = {
   components: {
@@ -18,7 +19,7 @@ const BaseUpload = {
       required: false,
       default: 1
     },
-    maxFileSizeInMb:{
+    maxFileSize:{
       type: Number,
       required: false,
       default: 2
@@ -37,29 +38,47 @@ const BaseUpload = {
       required: false,
       default: function () { return [] }
     },
+    trans: {
+      required: false,
+      default: function () {
+        return {
+          dropzoneText: {
+            remove: 'Remove!',
+            cancel: 'Cancel',
+            upload: 'Drop files here to upload',
+          },
+        };
+      }
+    },
   },
   data: function () {
     return {
+      dropzoneOptions: {
+        url: this.url,
+        maxFiles: this.maxNumberOfFiles,
+        maxFilesize: this.maxFilesize,
+        acceptedFiles: this.acceptedFileTypes,
+        thumbnailWidth: this.thumbnailWidth,
+        uploadedImages: this.uploadedImages,
+        dictDefaultMessage: "<i class='fa fa-cloud-upload d-block'></i>${this.trans.dropzoneText.upload}",
+        addRemoveLinks: true,
+        dictRemoveFile: this.trans.dropzoneText.remove,
+        dictCancelUpload: this.trans.dropzoneText.cancel,
+        headers:  {
+          'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        previewTemplate: this.template()
+      },
       mutableUploadedImages: this.uploadedImages,
-      headers: {
-        'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').getAttribute('content')
-      }
     }
   },
-  template: `<dropzone :id="collection" 
-                       :url="url" 
-                       v-bind:preview-template="template"
+  template: `<dropzone :id="collection"
+                       :options="dropzoneOptions"
                        v-on:vdropzone-success="onSuccess"
                        v-on:vdropzone-error="onUploadError"
                        v-on:vdropzone-removed-file="onFileDelete"
                        v-on:vdropzone-file-added="onFileAdded"
-                       :useFontAwesome="true" 
-                       :ref="collection"
-                       :maxNumberOfFiles="maxNumberOfFiles"
-                       :maxFileSizeInMB="maxFileSizeInMb"
-                       :acceptedFileTypes="acceptedFileTypes"
-                       :thumbnailWidth="thumbnailWidth"
-                       :headers="headers">
+                       :ref="collection">
                 
                 <input type="hidden" name="collection" :value="collection">
             </dropzone>`,
@@ -102,7 +121,8 @@ const BaseUpload = {
         if(this.mutableUploadedImages) {
           _.each(this.mutableUploadedImages, (file, key) => {
 
-            this.$refs[this.collection].manuallyAddFile({ name: file['name'],
+            this.$refs[this.collection].manuallyAddFile({
+                  name: file['name'],
                   size: file['size'],
                   type: file['type'],
                   url: file['url'],
@@ -156,7 +176,7 @@ const BaseUpload = {
 
     placeIcon: function(file) {
       //FIXME cele to je jqueryoidne, asi si budeme musiet spravit vlastny vue wrapper, tento je zbugovany
-      var $previewElement = $(file.previewElement);
+      const $previewElement = $(file.previewElement);
 
       if(file.url) {
         $previewElement.find('.dz-filename').html('<a href="'+file.url+'" target="_BLANK" class="dz-btn dz-custom-download">'+file.name+'</a>');
@@ -166,28 +186,28 @@ const BaseUpload = {
         //nothing, default thumb
       }
       else if(file.type.includes('pdf')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-pdf-o"></i><p>'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-pdf-o" style="width:'+this.thumbnailWidth+'px;"></i><p>'+file.name+'</p>');
       }
       else if(file.type.includes('word')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-word-o"></i><p>'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-word-o" style="width:'+this.thumbnailWidth+'px;"></i><p>'+file.name+'</p>');
       }
       else if(file.type.includes('spreadsheet') || file.type.includes('csv')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-excel-o"></i><p>'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-excel-o" style="width:'+this.thumbnailWidth+'px;"></i><p>'+file.name+'</p>');
       }
       else if(file.type.includes('presentation')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-powerpoint-o"></i><p>'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-powerpoint-o" style="width:'+this.thumbnailWidth+'px;"></i><p>'+file.name+'</p>');
       }
       else if(file.type.includes('video')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-video-o"></i><p>'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-video-o" style="width:'+this.thumbnailWidth+'px;"></i><p>'+file.name+'</p>');
       }
       else if(file.type.includes('text')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-text-o"></i><p>'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-text-o" style="width:'+this.thumbnailWidth+'px;"></i><p>'+file.name+'</p>');
       }
       else if(file.type.includes('zip') || file.type.includes('rar')) {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-archive-o"></i><p>'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-archive-o" style="width:'+this.thumbnailWidth+'px;"></i><p>'+file.name+'</p>');
       }
       else {
-        $previewElement.find('.dz-image').html('<i class="fa fa-file-o"></i><p>'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-o" style="width:'+this.thumbnailWidth+'px;"></i><p>'+file.name+'</p>');
       }
     },
 
