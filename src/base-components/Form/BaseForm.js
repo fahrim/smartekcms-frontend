@@ -68,6 +68,12 @@ const BaseForm = {
         return ['img', 'cover'];
       }
     },
+    nolangMediaCollectionNames: {
+      type: Array,
+      default: function() {
+        return ['img', 'cover'];
+      }
+    },
   },
   components: {
     'user-detail-tooltip': UserDetailTooltip
@@ -319,6 +325,7 @@ const BaseForm = {
     this.mediaCollections = this.mediaCollectionNames.flatMap(mc =>
         this.locales.map(i => mc + i)
     );
+    this.mediaCollections = this.mediaCollections.concat(this.nolangMediaCollectionNames)
   },
   methods: {
     getPostData() {
