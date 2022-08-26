@@ -8,20 +8,20 @@ const UserDetailTooltip = {
 		:auto-hide="true"
 	>
         <img :src="user.avatar_thumb_url" class="avatar-photo" :alt="user.full_name" v-if="user.avatar_thumb_url">
-        <div class="avatar-initials" v-if="!user.avatar_thumb_url">
+        <div class="avatar-initials d-inline-block" v-if="!user.avatar_thumb_url">
 			{{ abbr }}
 		</div>
 		<div class="avatar-full-name" v-if="options.showFullNameLabel">
 			{{ user.full_name }}
-			<span v-if="edit && datetime != ''">
+			<span v-if="edit && datetime !== ''">
 			    <br>
-			    <span class="user-info-span">{{datetime}}</span>
+			    <span class="user-info-span">{{ datetime }}</span>
 			</span>
 		</div>
 		<template slot="popover">
 			<div class="user-avatar">
 				<img :src="user.avatar_thumb_url" class="avatar-photo" :alt="user.full_name" v-if="user.avatar_thumb_url">
-				<div class="avatar-initials" v-else>
+				<div class="avatar-initials d-inline-block" v-else>
 					{{ abbr }}
 				</div>
 			</div>
