@@ -14,12 +14,12 @@ const BaseUpload = {
       type: String,
       required: true
     },
-    maxNumberOfFiles:{
+    maxNumberOfFiles: {
       type: Number,
       required: false,
       default: 1
     },
-    maxFileSize:{
+    maxFileSize: {
       type: Number,
       required: false,
       default: 2
@@ -33,10 +33,23 @@ const BaseUpload = {
       required: false,
       default: 200
     },
-    uploadedImages : {
+    thumbnailHeight: {
+      type: Number,
+      required: false,
+      default: 200
+    },
+    uploadedImages: {
       type: Array,
       required: false,
       default: function () { return [] }
+    },
+    uploadedImagesWidth: {
+      type: Number,
+      required: false
+    },
+    uploadedImagesHeight: {
+      type: Number,
+      required: false
     },
     trans: {
       required: false,
@@ -58,7 +71,8 @@ const BaseUpload = {
         maxFiles: this.maxNumberOfFiles,
         maxFilesize: this.maxFilesize,
         acceptedFiles: this.acceptedFileTypes,
-        thumbnailWidth: this.thumbnailWidth,
+        thumbnailWidth: this.uploadedImagesWidth ?? this.thumbnailWidth,
+        thumbnailHeight: this.uploadedImagesHeight ?? this.thumbnailHeight,
         uploadedImages: this.uploadedImages,
         dictDefaultMessage: "<i class='fa fa-cloud-upload d-block'></i>"+this.trans.dropzoneText.upload,
         addRemoveLinks: true,
