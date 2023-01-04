@@ -323,7 +323,7 @@ const BaseForm = {
 
     //Media Collections
     this.mediaCollections = this.mediaCollectionNames.flatMap(mc =>
-        this.locales.map(i => mc + i)
+        this.locales?.map(i => mc + i)
     );
     this.mediaCollections = this.mediaCollections.concat(this.nolangMediaCollectionNames)
   },
