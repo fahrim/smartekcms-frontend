@@ -90,6 +90,6 @@
 
 @media (max-width: 500px) {
     .app-header.navbar .navbar-brand {
-        display: none;
+        display: none!important;
     }
 }
