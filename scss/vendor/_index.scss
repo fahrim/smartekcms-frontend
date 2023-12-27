@@ -1,5 +1,8 @@
-@import '~@coreui/icons/css/coreui-icons.min.css';
-@import '~font-awesome/scss/font-awesome.scss';
-@import '~simple-line-icons/scss/simple-line-icons.scss';
-@import "~@coreui/coreui/scss/coreui";
+@import '@coreui/icons/css/coreui-icons.min.css';
+$fa-font-path: 'font-awesome/fonts'; //for vite
+@import 'font-awesome/scss/font-awesome.scss';
+
+$simple-line-font-path: 'simple-line-icons/fonts/';
+@import 'simple-line-icons/scss/simple-line-icons.scss';
+@import "@coreui/coreui/scss/coreui";
 @import "coreui-custom";
